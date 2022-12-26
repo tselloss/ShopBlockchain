@@ -11,9 +11,9 @@ public class Block {
     private long timeStamp;
     private int nonce;
 
-    public Block(String previousHash, String data, long timeStamp) {
+    public Block(String previousHash, String[] data, long timeStamp) {
         this.previousHash = previousHash;
-        this.data = data;
+        this.data = String.valueOf(data);
         this.timeStamp = timeStamp;
         this.hash = calculateBlockHash();
     }
@@ -56,5 +56,10 @@ public class Block {
     public void setData(String data) {
         this.data = data;
     }
+    public String[] toArray()
+    {
+        return new String[]{this.previousHash,this.data, String.valueOf(this.timeStamp), String.valueOf(this.nonce)};
+    }
+
 }
 
