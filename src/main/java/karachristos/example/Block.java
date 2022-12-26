@@ -58,7 +58,7 @@ public class Block {
     }
     public String[] toArray()
     {
-        return new String[]{this.previousHash,this.data, String.valueOf(this.timeStamp), String.valueOf(this.nonce)};
+        return new String[]{this.previousHash,this.data, String.valueOf(this.timeStamp)};
     }
 
 }

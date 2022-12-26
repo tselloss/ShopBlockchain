@@ -1,7 +1,7 @@
 package karachristos.example;
 
 public class Products {
-    public Products( String codeOfProduct, String titleOfProduct, String timestamp, String price, String description, String category, String previousRecord) {
+    public Products(String codeOfProduct, String titleOfProduct, String timestamp, String price, String description, String category, String previousRecord) {
         this.codeOfProduct = codeOfProduct;
         this.titleOfProduct = titleOfProduct;
         this.timestamp = timestamp;
@@ -67,7 +67,6 @@ public class Products {
         this.previousRecord = previousRecord;
     }
 
-    private String id;
     private String codeOfProduct;
     private String titleOfProduct;
     private String timestamp;

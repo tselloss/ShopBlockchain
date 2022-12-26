@@ -1,14 +1,15 @@
 package karachristos.example;
 
+import com.google.gson.GsonBuilder;
+
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Main {
     public static List<Block> blockChain = new ArrayList<>();
-    public static int prefix = 4;
+    public static int prefix = 2;
     public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException {
         ConnectionDB connectionDB=new ConnectionDB();
 
@@ -33,15 +34,20 @@ public class Main {
                 break;
             case 2:
                 System.out.println("Add a product...");
-                Products product=new Products("w222","Nike Shoes",""+new Date().getTime(),"$"+Math.random(),"Is black","Basketball Shoe","");
+                Date date= Calendar.getInstance().getTime();
+                DateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                String strDate = dateFormat.format(date);
+                Products product=new Products("w222","Nike Shoes",""+strDate,"$5","Is black","Basketball Shoe","");
                 Block genesisBlock= new Block("0",product.toArray(),new Date().getTime());
                 genesisBlock.mineBlock(prefix);
                 blockChain.add(genesisBlock);
-                System.out.println(blockChain.hashCode());
+                System.out.println(genesisBlock.getHash());
                 System.out.println("Node "+(blockChain.size()));
                 System.out.println("Is the BlockChain created well? "+isChainValid());
-                System.out.println(blockChain.toArray());
-                connectionDB.insertNewItem(genesisBlock);
+                //BlockChain To Json
+                String json= new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
+                System.out.println(json);
+                //connectionDB.insertNewItem(genesisBlock);
                 break;
             case 3:
                 //TODO
@@ -60,6 +66,7 @@ public class Main {
                 System.out.println("GoodBye");
         }
     }
+
 
 
 

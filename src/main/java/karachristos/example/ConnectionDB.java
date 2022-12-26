@@ -62,9 +62,9 @@ public class ConnectionDB {
         }
     }
 
-    public void takePreviousRec(String titleProd)
+    public void takePreviousRec(String codeOfProduct)
     {
-        String query="SELECT previousRecord From ProductList WHERE titleOfProduct='"+titleProd+"';";
+        String query="SELECT previousRecord From ProductList WHERE titleOfProduct='"+codeOfProduct+"';";
         try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
             if(res.next()==false){
                 System.out.println("We have not any same product");
