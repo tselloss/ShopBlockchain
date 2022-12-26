@@ -3,22 +3,36 @@ package karachristos.example;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 
 public class Block {
     private String hash;
     private String previousHash;
-    private String data;
-    private long timeStamp;
+
+    public String[] getData() {
+        return data;
+    }
+
+    public void setPreviousHash(String previousHash) {
+        this.previousHash = previousHash;
+    }
+
+    public void setData(String[] data) {
+        this.data = data;
+    }
+
+    private String[] data;
+    private String timeStamp;
     private int nonce;
 
-    public Block(String previousHash, String[] data, long timeStamp) {
+    public Block(String previousHash, String[] data, String timeStamp) {
         this.previousHash = previousHash;
-        this.data = String.valueOf(data);
+        this.data = data;
         this.timeStamp = timeStamp;
         this.hash = calculateBlockHash();
     }
     public String calculateBlockHash(){
-        String dataToHash = previousHash + Long.toString(timeStamp)
+        String dataToHash = previousHash + timeStamp.toString()
                 +data+Integer.toString(nonce);
         MessageDigest digest = null;
         byte[] bytes = null;
@@ -37,7 +51,7 @@ public class Block {
 
     public String mineBlock(int prefix){
         String prefixString =
-                new String(new char[prefix]).replace('\0','0');
+                new String(new char[prefix]).replace('\0','5');
         while (!hash.substring(0,prefix).equals(prefixString)){
             nonce++;
             hash = calculateBlockHash();
@@ -53,12 +67,10 @@ public class Block {
         return previousHash;
     }
 
-    public void setData(String data) {
-        this.data = data;
-    }
+
     public String[] toArray()
     {
-        return new String[]{this.previousHash,this.data, String.valueOf(this.timeStamp)};
+        return new String[]{this.hash,this.previousHash, this.timeStamp,String.valueOf(nonce),data[0], data[1], data[3], data[4], data[5], data[6]};
     }
 
 }

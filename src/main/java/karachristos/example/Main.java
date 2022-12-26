@@ -3,15 +3,21 @@ package karachristos.example;
 import com.google.gson.GsonBuilder;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main {
     public static List<Block> blockChain = new ArrayList<>();
-    public static int prefix = 2;
+    public static int prefix = 6;
+    public static Scanner scanner=new Scanner(System.in);
+
     public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException {
         ConnectionDB connectionDB=new ConnectionDB();
+        Date date= Calendar.getInstance().getTime();
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String strDate = dateFormat.format(date);
 
         System.out.println("---------------------------------------------------------------------");
         System.out.println("--------------------Welcome to our shop's program--------------------");
@@ -24,7 +30,6 @@ public class Main {
         System.out.println("Press 5 for DB Statistics");
         System.out.println("Press 6 to Exit");
 
-        Scanner scanner=new Scanner(System.in);
         int personChoice=scanner.nextInt();
 
         switch(personChoice){
@@ -33,21 +38,25 @@ public class Main {
                 connectionDB.showProductList();
                 break;
             case 2:
-                System.out.println("Add a product...");
-                Date date= Calendar.getInstance().getTime();
-                DateFormat dateFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-                String strDate = dateFormat.format(date);
-                Products product=new Products("w222","Nike Shoes",""+strDate,"$5","Is black","Basketball Shoe","");
-                Block genesisBlock= new Block("0",product.toArray(),new Date().getTime());
+                System.out.println("Now you to press some info about product");
+                System.out.println("Press the Title of product");
+                String title= scanner.next();
+                System.out.println("Press the price of "+title);
+                String price= scanner.next();
+                System.out.println("Give me description of the "+title);
+                String descr= scanner.next();
+                System.out.println("Give me the category of "+title);
+                String category= scanner.next();
+                Products product=new Products("Code"+String.valueOf(new Random().nextInt(10000)),"Nike Shoes"+title,""+strDate,"$"+price,""+descr,""+category,""+connectionDB.takePreviousRec(""+title));
+                Block genesisBlock= new Block("",product.toArray(),strDate);
                 genesisBlock.mineBlock(prefix);
                 blockChain.add(genesisBlock);
                 System.out.println(genesisBlock.getHash());
-                System.out.println("Node "+(blockChain.size()));
                 System.out.println("Is the BlockChain created well? "+isChainValid());
                 //BlockChain To Json
                 String json= new GsonBuilder().setPrettyPrinting().create().toJson(blockChain);
                 System.out.println(json);
-                //connectionDB.insertNewItem(genesisBlock);
+                connectionDB.insertNewItem(genesisBlock);
                 break;
             case 3:
                 //TODO
@@ -66,8 +75,6 @@ public class Main {
                 System.out.println("GoodBye");
         }
     }
-
-
 
 
     public static boolean isChainValid(){

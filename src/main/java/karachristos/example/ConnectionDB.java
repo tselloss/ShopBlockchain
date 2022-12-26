@@ -56,29 +56,33 @@ public class ConnectionDB {
             pstmt.setString(8,data[7]);
             pstmt.setString(9,data[8]);
             pstmt.setString(10,data[9]);
+            pstmt.executeUpdate();
         }catch (SQLException e)
         {
             System.out.println(e.getMessage());
         }
     }
 
-    public void takePreviousRec(String codeOfProduct)
+    public String takePreviousRec(String titleOfProduct)
     {
-        String query="SELECT previousRecord From ProductList WHERE titleOfProduct='"+codeOfProduct+"';";
+        String query="SELECT codeOfProduct From ProductList WHERE titleOfProduct='"+titleOfProduct+"'";
         try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
             if(res.next()==false){
                 System.out.println("We have not any same product");
+                return "";
             }else
             {
                 System.out.println("Previous Record ");
                 do{
                     System.out.println("Previous Record: " + res.getString("previousRecord") + "\n");
+                    return res.getString("codeOfProduct");
                 }while ((res.next()));
             }
         }catch (SQLException e)
         {
             System.out.println(e.getMessage());
         }
+        return "";
     }
 
 }
