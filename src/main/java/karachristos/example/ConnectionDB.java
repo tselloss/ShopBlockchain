@@ -1,5 +1,7 @@
 package karachristos.example;
 import java.sql.*;
+import java.util.ArrayList;
+
 public class ConnectionDB {
     private Connection connect() {
         Connection conn = null;
@@ -63,27 +65,140 @@ public class ConnectionDB {
         }
     }
 
-    public String takePreviousRec(String titleOfProduct)
-    {
-        String query="SELECT codeOfProduct From ProductList WHERE titleOfProduct='"+titleOfProduct+"'";
+
+    public String takePreviousHash() throws SQLException {
+        String query="SELECT hashCode From ProductList ORDER BY rowid DESC LIMIT 1";
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            while (res.next()) {
+                return res.getString("hashCode");
+            }
+        }
+        return "";
+    }
+
+    public String takePreviousRec(String titleOfProduct) throws SQLException {
+        String query="SELECT codeOfProduct From ProductList WHERE titleOfProduct='"+titleOfProduct+"' ORDER BY rowid DESC LIMIT 1";
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            while (res.next()) {
+                return res.getString("codeOfProduct");
+            }
+        }
+        return "";
+    }
+    public void showFirstProduct(String title) throws SQLException {
+        String query="SELECT rowid,* FROM ProductList where titleOfProduct='"+title+"' Order By rowid ASC LIMIT 1;";
         try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
             if(res.next()==false){
-                System.out.println("We have not any same product");
-                return "";
+                System.out.println("We have not any product");
             }else
             {
-                System.out.println("Previous Record ");
+                System.out.println("Product List: ");
                 do{
-                    System.out.println("Previous Record: " + res.getString("previousRecord") + "\n");
-                    return res.getString("codeOfProduct");
+                    System.out.println(
+                            "PRODUCT: " +
+                                    res.getInt("rowid") + "\n" +
+                                    "Product Code: " + res.getString("codeOfProduct") + "\n" +
+                                    "Title: " + res.getString("titleOfProduct") + "\n" +
+                                    "Time of Creation: " + res.getString("timestamps") + "\n" +
+                                    "Price: " + res.getString("price") + "\n" +
+                                    "Description: " + res.getString("description") + "\n" +
+                                    "Category: " +res.getString("category") + "\n" +
+                                    "Previous Record: " + res.getString("previousRecord") + "\n"
+                    );
                 }while ((res.next()));
+
             }
         }catch (SQLException e)
         {
             System.out.println(e.getMessage());
         }
-        return "";
     }
+
+    public void showLastProduct(String title) throws SQLException {
+        String query="SELECT rowid,* FROM ProductList where titleOfProduct='"+title+"' Order By rowid DESC LIMIT 1;";
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            if(res.next()==false){
+                System.out.println("We have not any product");
+            }else
+            {
+                System.out.println("Product List: ");
+                do{
+                    System.out.println(
+                            "PRODUCT: " +
+                                    res.getInt("rowid") + "\n" +
+                                    "Product Code: " + res.getString("codeOfProduct") + "\n" +
+                                    "Title: " + res.getString("titleOfProduct") + "\n" +
+                                    "Time of Creation: " + res.getString("timestamps") + "\n" +
+                                    "Price: " + res.getString("price") + "\n" +
+                                    "Description: " + res.getString("description") + "\n" +
+                                    "Category: " +res.getString("category") + "\n" +
+                                    "Previous Record: " + res.getString("previousRecord") + "\n"
+                    );
+                }while ((res.next()));
+
+            }
+        }catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void showProduct(String title) throws SQLException {
+        String query="SELECT rowid,* FROM ProductList where titleOfProduct='"+title+"'";
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            if(res.next()==false){
+                System.out.println("We have not any product");
+            }else
+            {
+                System.out.println("Product List: ");
+                do{
+                    System.out.println(
+                            "PRODUCT: " +
+                                    res.getInt("rowid") + "\n" +
+                                    "Product Code: " + res.getString("codeOfProduct") + "\n" +
+                                    "Title: " + res.getString("titleOfProduct") + "\n" +
+                                    "Time of Creation: " + res.getString("timestamps") + "\n" +
+                                    "Price: " + res.getString("price") + "\n" +
+                                    "Description: " + res.getString("description") + "\n" +
+                                    "Category: " +res.getString("category") + "\n" +
+                                    "Previous Record: " + res.getString("previousRecord") + "\n"
+                    );
+                }while ((res.next()));
+
+            }
+        }catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+    int i=0;
+    public void getStatistics(String title)  {
+        ArrayList<String> priceOfProducts= new ArrayList<>();
+        ArrayList<String> timestampOfProduct= new ArrayList<>();
+        String[] price={};
+        String query="SELECT * FROM ProductList where titleOfProduct='"+title+"'";
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            if(res.next()==false){
+                System.out.println("We have not any product with this title: "+title);
+            }else
+            {
+                do{
+                    priceOfProducts.add(res.getString("price"));
+                    timestampOfProduct.add(res.getString("timestamps"));
+                }while ((res.next()));
+            }
+            if (priceOfProducts.size()>2) {
+                System.out.println(priceOfProducts);
+                System.out.println(timestampOfProduct);
+            }else
+            {
+                System.out.println("We have not enough records to show the statistics for this product!!!");
+            }
+        }catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }
 
