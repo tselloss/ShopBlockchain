@@ -3,7 +3,6 @@ package karachristos.example;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 
 public class Block {
     private String hash;
@@ -22,6 +21,15 @@ public class Block {
     }
 
     private String[] data;
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     private String timeStamp;
     private int nonce;
 
@@ -58,19 +66,15 @@ public class Block {
         }
         return hash;
     }
-
     public String getHash() {
         return hash;
     }
-
     public String getPreviousHash() {
         return previousHash;
     }
-
-
     public String[] toArray()
     {
-        return new String[]{this.hash,this.previousHash, this.timeStamp,String.valueOf(nonce),data[0], data[1], data[3], data[4], data[5], data[6]};
+        return new String[]{this.hash,this.previousHash, this.timeStamp, String.valueOf(this.nonce),data[0], data[1], data[3], data[4], data[5], data[6]};
     }
 
 }

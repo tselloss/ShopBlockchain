@@ -2,7 +2,14 @@ package karachristos.example;
 import java.sql.*;
 import java.util.ArrayList;
 
+
 public class ConnectionDB {
+    Blockchain bc;
+
+    public ConnectionDB (Blockchain blockchain){
+        bc=blockchain;
+    }
+
     private Connection connect() {
         Connection conn = null;
         try {
@@ -199,6 +206,47 @@ public class ConnectionDB {
         }
     }
 
+    public void getInfoFromDB()
+    {
+        ArrayList<Block> dbSavedBlocks= new ArrayList<>();
+        String query="SELECT * From ProductList";
 
+        try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
+            if(res.next()==false){
+                System.out.println("We have not any product");
+            }else
+            {
+                do{
+                    Products products= new Products(res.getString("codeOfProduct"),
+                            res.getString("titleOfProduct"),
+                            res.getString("timestamps"),
+                            res.getString("price"),
+                            res.getString("description"),
+                            res.getString("category"),
+                            res.getString("previousRecord"));
+                    Block block= new Block(res.getString("previousHash"), products.toArray(),res.getString("timestamps"));
+                    dbSavedBlocks.add(block);
+                }while ((res.next()));
+            }
+            if (bc.getBlockchain().isEmpty()) {
+                bc.setBlockchain((ArrayList<Block>) dbSavedBlocks.clone());
+            }
+            else if (dbSavedBlocks.size()==bc.getBlockchain().size())
+            {
+
+            }
+            else if(dbSavedBlocks.size()>bc.getBlockchain().size())
+            {
+             for (int i=bc.getBlockchain().size(); i<=dbSavedBlocks.size()-1; i++)
+             {
+                 bc.addNewBlock(dbSavedBlocks.get(i));
+             }
+            }
+        }catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+    }
 }
+
 
