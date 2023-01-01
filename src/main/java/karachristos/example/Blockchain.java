@@ -1,7 +1,9 @@
 package karachristos.example;
+import com.google.gson.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Blockchain {
     public ArrayList<Block> getBlockchain() {
@@ -15,38 +17,45 @@ public class Blockchain {
     private ArrayList<Block> blockchain=new ArrayList<>();
 
 
-    public Blockchain()
-    {
-        blockchain= new ArrayList<Block>();
-        blockchain.add(genesisBlock());
-    }
-    private Block genesisBlock()
-    {
-        Block genesis = new Block("", new String[]{""},"");
-        genesis.setPreviousHash(null);
-        genesis.calculateBlockHash();
-        return genesis;
-    }
-
 
     public void addNewBlock(Block block)
     {
-        Block newBlock= block;
-        newBlock.setPreviousHash(blockchain.get(blockchain.size()-1).getHash());
-        newBlock.calculateBlockHash();
-        this.blockchain.add(newBlock);
+        this.blockchain.add(block);
     }
 
     public void displayBlockchain()
     {
-        for(int i=1; i<blockchain.size(); i++)
-        {
-            System.out.println("Block: "+i);
-            System.out.println("Timestamp: "+blockchain.get(i).getTimeStamp());
-            System.out.println("Hash: "+blockchain.get(i).getHash());
-            System.out.println("Previous Hash: "+blockchain.get(i).getPreviousHash());
-            System.out.println("Data: "+ Arrays.toString(blockchain.get(i).getData()));
+
+        JSONObject jsonBlockchain= new JSONObject();
+        JSONArray array= new JSONArray();
+        for(int i=0; i<blockchain.size(); i++) {
+            try {
+                JSONObject record= new JSONObject();
+                record.put("Block: ", i+1);
+                record.put("Timestamp: ", blockchain.get(i).getTimeStamp());
+                record.put("Hash: ", blockchain.get(i).getHash());
+                record.put("Previous Hash: ", blockchain.get(i).getPreviousHash());
+                record.put("Data: ", Arrays.toString(blockchain.get(i).getData()));
+                array.add(record);
+             }catch (JsonIOException e)
+            {
+                e.printStackTrace();
+            }
         }
+        jsonBlockchain.put("Blockchain",array);
+        Gson gson= new GsonBuilder().setPrettyPrinting().create();
+        JsonElement jsonElement= JsonParser.parseString(jsonBlockchain.toJSONString());
+        String prettyJson=gson.toJson(jsonElement);
+        System.out.println(prettyJson);
+    }
+
+
+    public void jsonParser(JsonObject jsonObject)
+    {
+//        JsonParser parser= new JsonParser();
+//        try{
+//
+//        }
     }
     public Block getLastBlock()
     {

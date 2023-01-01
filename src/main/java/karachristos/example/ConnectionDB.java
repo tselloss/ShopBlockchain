@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class ConnectionDB {
     Blockchain bc;
-
     public ConnectionDB (Blockchain blockchain){
         bc=blockchain;
     }
@@ -224,7 +223,7 @@ public class ConnectionDB {
                             res.getString("description"),
                             res.getString("category"),
                             res.getString("previousRecord"));
-                    Block block= new Block(res.getString("previousHash"), products.toArray(),res.getString("timestamps"));
+                    Block block= new Block(res.getString("previousHash"),res.getString("hashCode"), products.toArray(),res.getString("timestamps"), Integer.parseInt(res.getString("nonce")));
                     dbSavedBlocks.add(block);
                 }while ((res.next()));
             }

@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 public class Main {
     public static List<Block> blockChain = new ArrayList<>();
-    public static int prefix = 2;
+    public static int prefix = 6;
 
     public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException {
         Blockchain bc=new Blockchain();
@@ -47,9 +47,10 @@ public class Main {
                     Scanner scanner4 = new Scanner(System.in);
                     String category = scanner4.nextLine();
                     Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + strDate, "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                    Block a= new Block(connectionDB.takePreviousHash(), product.toArray(), strDate);
-                    bc.addNewBlock(a);
+                    Block single= new Block(connectionDB.takePreviousHash(), product.toArray(), strDate,connectionDB);
+                    single.mineBlock(prefix);
                     bc.displayBlockchain();
+                    connectionDB.insertNewItem(single);
                     System.out.println("Is the BlockChain created well? " + isChainValid());
                     break;
                 case 3:
@@ -70,9 +71,10 @@ public class Main {
                         Scanner scanner8 = new Scanner(System.in);
                         category = scanner8.nextLine();
                         Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + strDate, "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                        Block b= new Block(connectionDB.takePreviousHash(), products.toArray(), strDate);
-                        bc.addNewBlock(b);
+                        Block multiple= new Block(connectionDB.takePreviousHash(), products.toArray(), strDate,connectionDB);
+                        multiple.mineBlock(prefix);
                         bc.displayBlockchain();
+                        connectionDB.insertNewItem(multiple);
                         System.out.println("Is the BlockChain created well? " + isChainValid());
                         numOfProds--;
                     }

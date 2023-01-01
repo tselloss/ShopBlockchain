@@ -5,7 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Block {
+
     private String hash;
+    private ConnectionDB connectionDB;
     private String previousHash;
 
     public String[] getData() {
@@ -33,11 +35,19 @@ public class Block {
     private String timeStamp;
     private int nonce;
 
-    public Block(String previousHash, String[] data, String timeStamp) {
+    public Block(String previousHash, String[] data, String timeStamp,ConnectionDB connectionDB) {
         this.previousHash = previousHash;
         this.data = data;
         this.timeStamp = timeStamp;
         this.hash = calculateBlockHash();
+        this.connectionDB=connectionDB;
+    }
+    public Block(String previousHash,String hash, String[] data, String timeStamp,int nonce) {
+        this.previousHash = previousHash;
+        this.data = data;
+        this.timeStamp = timeStamp;
+        this.hash = hash;
+        this.nonce=nonce;
     }
     public String calculateBlockHash(){
         String dataToHash = previousHash + timeStamp.toString()
