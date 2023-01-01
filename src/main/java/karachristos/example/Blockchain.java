@@ -50,8 +50,7 @@ public class Blockchain {
     }
 
 
-    public void getLastBlock(String title) {
-
+    public void getProducts(String title) {
         ArrayList<String[]> products = new ArrayList<>();
         for(Block block: blockchain){
             String[] blocks = block.getData();
@@ -123,7 +122,6 @@ public class Blockchain {
                     System.out.println(prettyJson1);
                     break;
                 case 3:
-                    //todo is not working please check the Json record
                     JSONObject jsonObject2=new JSONObject();
                     JSONArray array1= new JSONArray();
                     for (String[] product : products) {
@@ -149,6 +147,41 @@ public class Blockchain {
                     break;
             }
 
+        }
+    }
+    public void getStatistics(String title)
+    {
+        ArrayList<String[]> products = new ArrayList<>();
+        for(Block block: blockchain){
+            String[] blocks = block.getData();
+            if(Arrays.asList(blocks).contains(title)){
+                products.add(blocks);
+            }
+        }
+        if(products.isEmpty()){
+            System.out.println("We have not any records with this title.");
+        } else if (products.size()==1) {
+            System.out.println("We have only a record is we can't show statistics");
+        }else
+        {
+            System.out.println("We have "+products.size()+" records of this product.");
+            JSONObject jsonObject3=new JSONObject();
+            JSONArray array2= new JSONArray();
+            for (String[] product : products) {
+                try {
+                    JSONObject record3 = new JSONObject();
+                    record3.put("Timestamp: ", product [2]);
+                    record3.put("Price: ", product [3]);
+                    array2.add(record3);
+                }catch (JsonIOException e){
+                    e.printStackTrace();
+                }
+            }
+            jsonObject3.put("Multiple records of product", array2);
+            Gson json3 = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement jsonElement3 = JsonParser.parseString(jsonObject3.toJSONString());
+            String prettyJson3 = json3.toJson(jsonElement3);
+            System.out.println(prettyJson3);
         }
     }
 

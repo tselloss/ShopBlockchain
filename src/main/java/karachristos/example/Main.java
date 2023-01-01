@@ -9,7 +9,6 @@ import java.util.*;
 public class Main {
     public static List<Block> blockChain = new ArrayList<>();
     public static int prefix = 6;
-
     public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         Blockchain bc=new Blockchain();
         ConnectionDB connectionDB = new ConnectionDB(bc);
@@ -80,19 +79,18 @@ public class Main {
                     System.out.println(blockChain.toArray());
                     break;
                 case 4:
-
                     System.out.println("Search a product...");
                     System.out.println("Press the title of product");
                     Scanner scanner9 = new Scanner(System.in);
                     String title1 = scanner9.nextLine();
-                    bc.getLastBlock(title1);
+                    bc.getProducts(title1);
                     break;
                 case 5:
                     System.out.println("Statistics of products...");
                     System.out.println("Give the title of product that you want to show the statistics");
                     Scanner scanner11 = new Scanner(System.in);
                     String titleForStatistics = scanner11.nextLine();
-                    connectionDB.getStatistics(titleForStatistics);
+                    bc.getStatistics(titleForStatistics);
                     break;
                 case 6:
                     System.out.println("GoodBye");
