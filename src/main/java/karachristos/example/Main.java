@@ -86,27 +86,6 @@ public class Main {
                     Scanner scanner9 = new Scanner(System.in);
                     String title1 = scanner9.nextLine();
                     bc.getLastBlock(title1);
-//                    System.out.println("Press 1 to see the first record");
-//                    System.out.println("Press 2 to see the last record");
-//                    System.out.println("Press 3 to see all record");
-//                    System.out.println("Press 4 to exit");
-//                    Scanner scanner10 = new Scanner(System.in);
-//                    int personChoise = scanner10.nextInt();
-//                    switch (personChoise) {
-//                        case 1:
-//                            connectionDB.showFirstProduct(title1);
-//                            break;
-//                        case 2:
-//                            //connectionDB.showLastProduct(title1);
-//                            connectionDB.getInfoFromDB();
-//
-//                            break;
-//                        case 3:
-//                            connectionDB.showProduct(title1);
-//                            break;
-//                        case 4:
-//                            break;
-//                    }
                     break;
                 case 5:
                     System.out.println("Statistics of products...");

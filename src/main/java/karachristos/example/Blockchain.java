@@ -125,20 +125,25 @@ public class Blockchain {
                 case 3:
                     //todo is not working please check the Json record
                     JSONObject jsonObject2=new JSONObject();
-                    JSONObject record2 = new JSONObject();
-                    for (int i=0; i==products.size()-1; i++) {
-                        record2.put("Product Code: ", products.get(i)[0]);
-                        record2.put("Title of product: ", products.get(i)[1]);
-                        record2.put("Timestamp: ", products.get(i)[2]);
-                        record2.put("Price: ", products.get(i)[3]);
-                        record2.put("Description: ", products.get(i)[4]);
-                        record2.put("Category: ", products.get(i)[5]);
-                        record2.put("Last record: ", products.get(i)[6]);
-                        array.add(record2);
+                    JSONArray array1= new JSONArray();
+                    for (String[] product : products) {
+                        try {
+                            JSONObject record2 = new JSONObject();
+                            record2.put("Product Code: ", product [0]);
+                            record2.put("Title of product: ", product [1]);
+                            record2.put("Timestamp: ", product [2]);
+                            record2.put("Price: ", product [3]);
+                            record2.put("Description: ", product [4]);
+                            record2.put("Category: ", product [5]);
+                            record2.put("Last record: ", product [6]);
+                            array1.add(record2);
+                        }catch (JsonIOException e){
+                            e.printStackTrace();
+                        }
                     }
-                    jsonObject2.put("Multiple records of product", array);
+                    jsonObject2.put("Multiple records of product", array1);
                     Gson json2 = new GsonBuilder().setPrettyPrinting().create();
-                    JsonElement jsonElement2 = JsonParser.parseString(record2.toJSONString());
+                    JsonElement jsonElement2 = JsonParser.parseString(jsonObject2.toJSONString());
                     String prettyJson2 = json2.toJson(jsonElement2);
                     System.out.println(prettyJson2);
                     break;
