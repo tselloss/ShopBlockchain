@@ -1,5 +1,8 @@
 package karachristos.example;
+import org.json.simple.parser.ParseException;
+
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -7,14 +10,13 @@ public class Main {
     public static List<Block> blockChain = new ArrayList<>();
     public static int prefix = 6;
 
-    public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         Blockchain bc=new Blockchain();
         ConnectionDB connectionDB = new ConnectionDB(bc);
+        Timestamp currentDate=new Timestamp(System.currentTimeMillis());
         boolean run=true;
         while (run) {
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            String strDate = dateFormat.format(date);
+            connectionDB.getInfoFromDB();
             System.out.println("---------------------------------------------------------------------");
             System.out.println("--------------------Welcome to our shop's program--------------------");
             System.out.println("---------------------------------------------------------------------");
@@ -29,7 +31,6 @@ public class Main {
             switch (personChoice) {
                 case 1:
                     System.out.println("Product List...");
-                    connectionDB.getInfoFromDB();
                     bc.displayBlockchain();
                     break;
                 case 2:
@@ -46,10 +47,9 @@ public class Main {
                     System.out.println("Give me the category of " + title);
                     Scanner scanner4 = new Scanner(System.in);
                     String category = scanner4.nextLine();
-                    Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + strDate, "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                    Block single= new Block(connectionDB.takePreviousHash(), product.toArray(), strDate,connectionDB);
+                    Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
+                    Block single= new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(),connectionDB);
                     single.mineBlock(prefix);
-                    bc.displayBlockchain();
                     connectionDB.insertNewItem(single);
                     System.out.println("Is the BlockChain created well? " + isChainValid());
                     break;
@@ -70,10 +70,9 @@ public class Main {
                         System.out.println("Give me the category of " + title);
                         Scanner scanner8 = new Scanner(System.in);
                         category = scanner8.nextLine();
-                        Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + strDate, "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                        Block multiple= new Block(connectionDB.takePreviousHash(), products.toArray(), strDate,connectionDB);
+                        Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
+                        Block multiple= new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate.toString(),connectionDB);
                         multiple.mineBlock(prefix);
-                        bc.displayBlockchain();
                         connectionDB.insertNewItem(multiple);
                         System.out.println("Is the BlockChain created well? " + isChainValid());
                         numOfProds--;
@@ -81,29 +80,33 @@ public class Main {
                     System.out.println(blockChain.toArray());
                     break;
                 case 4:
+
                     System.out.println("Search a product...");
                     System.out.println("Press the title of product");
                     Scanner scanner9 = new Scanner(System.in);
                     String title1 = scanner9.nextLine();
-                    System.out.println("Press 1 to see the first record");
-                    System.out.println("Press 2 to see the last record");
-                    System.out.println("Press 3 to see all record");
-                    System.out.println("Press 4 to exit");
-                    Scanner scanner10 = new Scanner(System.in);
-                    int personChoise = scanner10.nextInt();
-                    switch (personChoise) {
-                        case 1:
-                            connectionDB.showFirstProduct(title1);
-                            break;
-                        case 2:
-                            connectionDB.showLastProduct(title1);
-                            break;
-                        case 3:
-                            connectionDB.showProduct(title1);
-                            break;
-                        case 4:
-                            break;
-                    }
+                    bc.getLastBlock(title1);
+//                    System.out.println("Press 1 to see the first record");
+//                    System.out.println("Press 2 to see the last record");
+//                    System.out.println("Press 3 to see all record");
+//                    System.out.println("Press 4 to exit");
+//                    Scanner scanner10 = new Scanner(System.in);
+//                    int personChoise = scanner10.nextInt();
+//                    switch (personChoise) {
+//                        case 1:
+//                            connectionDB.showFirstProduct(title1);
+//                            break;
+//                        case 2:
+//                            //connectionDB.showLastProduct(title1);
+//                            connectionDB.getInfoFromDB();
+//
+//                            break;
+//                        case 3:
+//                            connectionDB.showProduct(title1);
+//                            break;
+//                        case 4:
+//                            break;
+//                    }
                     break;
                 case 5:
                     System.out.println("Statistics of products...");
