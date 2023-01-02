@@ -3,22 +3,8 @@ package karachristos.example;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
-import static karachristos.example.Main.isChainValid;
-
-public class Block implements Runnable{
-    @Override
-    public void run()  {
-        mineBlock(Main.prefix);
-        try {
-            connectionDB.insertNewItem(this);
-            connectionDB.getInfoFromDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Is the BlockChain created well? " + isChainValid());
-    }
+public class Block {
 
     private String hash;
     private ConnectionDB connectionDB;

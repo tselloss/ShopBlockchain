@@ -69,7 +69,6 @@ public class ConnectionDB {
         {
             System.out.println(e.getMessage());
         }
-        System.out.println("A new Item with title: "+data[5]+" is inserted at time: "+data[2]);
     }
 
 

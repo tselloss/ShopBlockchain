@@ -1,20 +1,20 @@
 package karachristos.example;
+import org.json.simple.parser.ParseException;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.*;
-import java.util.logging.Handler;
-
-public class Main{
+public class Main {
     public static List<Block> blockChain = new ArrayList<>();
     public static int prefix = 6;
-    public static <Blocks> void main(String[] args) throws SQLException{
+    public static <Blocks> void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
         Blockchain bc=new Blockchain();
         ConnectionDB connectionDB = new ConnectionDB(bc);
         Timestamp currentDate=new Timestamp(System.currentTimeMillis());
         boolean run=true;
         while (run) {
-            ExecutorService executorService= Executors.newCachedThreadPool();
             connectionDB.getInfoFromDB();
             System.out.println("---------------------------------------------------------------------");
             System.out.println("--------------------Welcome to our shop's program--------------------");
@@ -47,7 +47,10 @@ public class Main{
                     Scanner scanner4 = new Scanner(System.in);
                     String category = scanner4.nextLine();
                     Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                    executorService.execute(new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(),connectionDB));
+                    Block single= new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(),connectionDB);
+                    single.mineBlock(prefix);
+                    connectionDB.insertNewItem(single);
+                    System.out.println("Is the BlockChain created well? " + isChainValid());
                     break;
                 case 3:
                     System.out.println("Add multiple products...");
@@ -67,7 +70,10 @@ public class Main{
                         Scanner scanner8 = new Scanner(System.in);
                         category = scanner8.nextLine();
                         Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                        executorService.execute(new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate.toString(),connectionDB));
+                        Block multiple= new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate.toString(),connectionDB);
+                        multiple.mineBlock(prefix);
+                        connectionDB.insertNewItem(multiple);
+                        System.out.println("Is the BlockChain created well? " + isChainValid());
                         numOfProds--;
                     }
                     System.out.println(blockChain.toArray());
