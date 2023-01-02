@@ -2,9 +2,6 @@ package karachristos.example;
 import com.google.gson.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -38,8 +35,8 @@ public class Blockchain {
                 record.put("Previous Hash: ", blockchain.get(i).getPreviousHash());
                 record.put("Data: ", Arrays.toString(blockchain.get(i).getData()));
                 array.add(record);
-            } catch (JsonIOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
         jsonBlockchain.put("Blockchain", array);
