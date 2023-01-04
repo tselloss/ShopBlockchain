@@ -1,8 +1,13 @@
 package karachristos.example;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.*;
+<<<<<<< Updated upstream
 import java.util.logging.Handler;
 
 public class Main{
@@ -10,11 +15,28 @@ public class Main{
     public static int prefix = 5;
     public static <Blocks> void main(String[] args) throws SQLException{
         Blockchain bc=new Blockchain();
+=======
+
+public class Main {
+    public static List<Block> blockChain = new ArrayList<>();
+    public static int prefix = 6;
+
+    public static <Blocks> void main(String[] args) throws SQLException, InterruptedException {
+        String[] titleRandom = {"Nike Shoe", "Adidas Shoe", "Vans Shoe"};
+        String[] priceRandom = {"80", "90", "100"};
+        String[] descrRandom = {"It's black", "It's blue", "It's white"};
+        String[] categoryRandom = {"Sneakers", "Outdoor", "Indoor"};
+        Blockchain bc = new Blockchain();
+>>>>>>> Stashed changes
         ConnectionDB connectionDB = new ConnectionDB(bc);
-        Timestamp currentDate=new Timestamp(System.currentTimeMillis());
-        boolean run=true;
+        connectionDB.createTable();
+        boolean run = true;
         while (run) {
+<<<<<<< Updated upstream
             Executor executor= MyExecutors.myThreadPool(5);
+=======
+            Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+>>>>>>> Stashed changes
             connectionDB.getInfoFromDB();
             System.out.println("---------------------------------------------------------------------");
             System.out.println("--------------------Welcome to our shop's program--------------------");
@@ -33,6 +55,7 @@ public class Main{
                     bc.displayBlockchain();
                     break;
                 case 2:
+<<<<<<< Updated upstream
                     Executor executor1= MyExecutors.myThreadPool(2);
                     System.out.println("Now you to press some info about product");
                     System.out.println("Press the Title of product");
@@ -49,11 +72,40 @@ public class Main{
                     String category = scanner4.nextLine();
                     Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
                     executor1.execute(new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(),connectionDB));
+=======
+//                    System.out.println("Now you to press some info about product");
+//                    System.out.println("Press the Title of product");
+//                    Scanner scanner1 = new Scanner(System.in);
+//                    String title = scanner1.nextLine();
+//                    System.out.println("Press the price of " + title);
+//                    Scanner scanner2 = new Scanner(System.in);
+//                    String price = scanner2.nextLine();
+//                    System.out.println("Give me description of the " + title);
+//                    Scanner scanner3 = new Scanner(System.in);
+//                    String descr = scanner3.nextLine();
+//                    System.out.println("Give me the category of " + title);
+//                    Scanner scanner4 = new Scanner(System.in);
+//                    String category = scanner4.nextLine();
+                    int titleR = new Random().nextInt(titleRandom.length);
+                    String title = titleRandom[titleR];
+                    int priceR = new Random().nextInt(priceRandom.length);
+                    String price = priceRandom[priceR];
+                    int descrR = new Random().nextInt(descrRandom.length);
+                    String descr = descrRandom[descrR];
+                    int categoryR = new Random().nextInt(categoryRandom.length);
+                    String category = categoryRandom[categoryR];
+                    Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
+                    Thread blockprod= new Thread(new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(), connectionDB));
+                    blockprod.start();
+                    blockprod.join();
+>>>>>>> Stashed changes
                     break;
                 case 3:
+                    Timestamp currentDate1 = new Timestamp(System.currentTimeMillis());
                     System.out.println("Add multiple products...");
                     System.out.println("How many products do you want to add?");
                     int numOfProds = scanner.nextInt();
+<<<<<<< Updated upstream
                     Executor executor2= MyExecutors.myThreadPool(numOfProds);
                     while (numOfProds > 0) {
                         System.out.println("Press the Title of product");
@@ -70,6 +122,33 @@ public class Main{
                         category = scanner8.nextLine();
                         Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
                         executor2.execute(new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate.toString(),connectionDB));
+=======
+                    while (numOfProds>0) {
+//                        System.out.println("Press the Title of product");
+//                        Scanner scanner5 = new Scanner(System.in);
+//                        title = scanner5.nextLine();
+//                        System.out.println("Press the price of " + title);
+//                        Scanner scanner6 = new Scanner(System.in);
+//                        price = scanner6.nextLine();
+//                        System.out.println("Give me description of the " + title);
+//                        Scanner scanner7 = new Scanner(System.in);
+//                        descr = scanner7.nextLine();
+//                        System.out.println("Give me the category of " + title);
+//                        Scanner scanner8 = new Scanner(System.in);
+//                        category = scanner8.nextLine();
+                        int titleR1 = new Random().nextInt(titleRandom.length);
+                        String title1 = titleRandom[titleR1];
+                        int priceR1 = new Random().nextInt(priceRandom.length);
+                        String price1 = priceRandom[priceR1];
+                        int descrR1 = new Random().nextInt(descrRandom.length);
+                        String descr1 = descrRandom[descrR1];
+                        int categoryR1 = new Random().nextInt(categoryRandom.length);
+                        String category1 = categoryRandom[categoryR1];
+                        Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title1, "" + currentDate.toString(), "$" + price1, "" + descr1, "" + category1, "" + connectionDB.takePreviousRec("" + title1));
+                        Thread blockprod1= new Thread(new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate1.toString(), connectionDB));
+                        blockprod1.start();
+                        blockprod1.join();
+>>>>>>> Stashed changes
                         numOfProds--;
                     }
                     break;
@@ -89,24 +168,25 @@ public class Main{
                     break;
                 case 6:
                     System.out.println("GoodBye");
-                    run=false;
+                    run = false;
             }
         }
     }
-    public static boolean isChainValid(){
-        Block currentBlock;
-        Block previousBlock;
-        String hashTarget = new String(new char[prefix]).replace('\0','0');
-        for (int i=1;i<blockChain.size();i++){
-            currentBlock = blockChain.get(i);
-            previousBlock = blockChain.get(i-1);
-            if (!currentBlock.getHash().equals(currentBlock.calculateBlockHash()))
-                return false;
-            if (!previousBlock.getHash().equals(currentBlock.getPreviousHash()))
-                return false;
-            if (!currentBlock.getHash().substring(0,prefix).equals(hashTarget))
-                return false;
+
+        public static boolean isChainValid() {
+            Block currentBlock;
+            Block previousBlock;
+            String hashTarget = new String(new char[prefix]).replace('\0', '0');
+            for (int i = 1; i < blockChain.size(); i++) {
+                currentBlock = blockChain.get(i);
+                previousBlock = blockChain.get(i - 1);
+                if (!currentBlock.getHash().equals(currentBlock.calculateBlockHash()))
+                    return false;
+                if (!previousBlock.getHash().equals(currentBlock.getPreviousHash()))
+                    return false;
+                if (!currentBlock.getHash().substring(0, prefix).equals(hashTarget))
+                    return false;
+            }
+            return true;
         }
-        return true;
     }
-}

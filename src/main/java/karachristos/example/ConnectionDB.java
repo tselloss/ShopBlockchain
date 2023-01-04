@@ -18,8 +18,19 @@ public class ConnectionDB {
         }
         return conn;
     }
-    public void showProductList() throws SQLException {
 
+    public void createTable()
+    {
+        String query = "CREATE TABLE IF NOT EXISTS ProductList (hashCode text , previousHash,timestamps, nonce text, codeOfProduct text,titleOfProduct text,price text,description text,category text ,previousRecord);";
+        try (Connection conn=this.connect(); Statement stmnt=conn.createStatement();) {
+            // create a new table
+            stmnt.execute(query);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void showProductList() throws SQLException {
         String query="SELECT rowid,* FROM ProductList;";
         try(Connection conn=this.connect(); Statement stmnt=conn.createStatement(); ResultSet res=stmnt.executeQuery(query)){
             if(res.next()==false){

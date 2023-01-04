@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+<<<<<<< Updated upstream
 
 import static karachristos.example.Main.isChainValid;
 
@@ -19,6 +20,62 @@ public class Block implements Runnable{
         }
         System.out.println("Current thread: "+Thread.currentThread().getName());
         System.out.println("Is the BlockChain created well? " + isChainValid());
+=======
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.*;
+
+import static karachristos.example.Main.*;
+
+public class Block extends Thread{
+    private Lock lock= new ReentrantLock();
+
+    @Override
+    public synchronized void run() {
+        try {
+            productBlock(lock);
+            waitingBlock();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public synchronized void productBlock(Lock lock) throws InterruptedException{
+                mineBlock(prefix);
+                if (getHash().length()<0) {
+                    try {
+                        wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                {
+                try{
+                    connectionDB.getInfoFromDB();
+                    connectionDB.insertNewItem(this);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                System.out.println("Current thread: "+Thread.currentThread().getName());
+                System.out.println("Is the BlockChain created well? " + isChainValid());
+                }
+    }
+
+    public synchronized void waitingBlock() throws InterruptedException
+    {
+        Thread.sleep(1000);
+                try{
+                if(getHash().length()>0){
+                this.notify();
+                Thread.sleep(200);
+                 }
+                }catch (Exception e)
+                {
+                    System.out.println("Something gone wrong here");
+                    e.printStackTrace();
+                }
+>>>>>>> Stashed changes
     }
 
     private String hash;
@@ -101,6 +158,5 @@ public class Block implements Runnable{
     {
         return new String[]{this.hash,this.previousHash, this.timeStamp, String.valueOf(this.nonce),data[0], data[1], data[3], data[4], data[5], data[6]};
     }
-
 }
 
