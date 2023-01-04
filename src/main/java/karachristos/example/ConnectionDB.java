@@ -61,13 +61,14 @@ public class ConnectionDB {
 
 
     public void insertNewItem(Block block) throws SQLException {
+        Timestamp currentDate1 = new Timestamp(System.currentTimeMillis());
         String[] data= block.toArray();
         //Integer id, String productCode,String titleOfProduct,String timestamps,String price,String description,String category,String previousHash
         String query="INSERT INTO ProductList(hashCode,previousHash,timestamps,nonce,codeOfProduct,titleOfProduct,price,description,category,previousRecord) VALUES(?,?,?,?,?,?,?,?,?,?)";
         try(Connection connection=this.connect(); PreparedStatement pstmt=connection.prepareStatement(query)){
             pstmt.setString(1,data[0]);
             pstmt.setString(2, data[1]);
-            pstmt.setString(3,data[2]);
+            pstmt.setString(3, currentDate1.toString());
             pstmt.setString(4,data[3]);
             pstmt.setString(5,data[4]);
             pstmt.setString(6,data[5]);
@@ -80,7 +81,7 @@ public class ConnectionDB {
         {
             System.out.println(e.getMessage());
         }
-        System.out.println("A new Item with title: "+data[5]+" is inserted at time: "+data[2]);
+        System.out.println("A new Item with title: "+data[5]+" is inserted at time: "+currentDate1.toString());
     }
 
 

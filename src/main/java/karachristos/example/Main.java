@@ -1,21 +1,9 @@
 package karachristos.example;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.*;
-<<<<<<< Updated upstream
-import java.util.logging.Handler;
-
-public class Main{
-    public static List<Block> blockChain = new ArrayList<>();
-    public static int prefix = 5;
-    public static <Blocks> void main(String[] args) throws SQLException{
-        Blockchain bc=new Blockchain();
-=======
 
 public class Main {
     public static List<Block> blockChain = new ArrayList<>();
@@ -27,16 +15,11 @@ public class Main {
         String[] descrRandom = {"It's black", "It's blue", "It's white"};
         String[] categoryRandom = {"Sneakers", "Outdoor", "Indoor"};
         Blockchain bc = new Blockchain();
->>>>>>> Stashed changes
         ConnectionDB connectionDB = new ConnectionDB(bc);
         connectionDB.createTable();
         boolean run = true;
         while (run) {
-<<<<<<< Updated upstream
-            Executor executor= MyExecutors.myThreadPool(5);
-=======
             Timestamp currentDate = new Timestamp(System.currentTimeMillis());
->>>>>>> Stashed changes
             connectionDB.getInfoFromDB();
             System.out.println("---------------------------------------------------------------------");
             System.out.println("--------------------Welcome to our shop's program--------------------");
@@ -55,24 +38,6 @@ public class Main {
                     bc.displayBlockchain();
                     break;
                 case 2:
-<<<<<<< Updated upstream
-                    Executor executor1= MyExecutors.myThreadPool(2);
-                    System.out.println("Now you to press some info about product");
-                    System.out.println("Press the Title of product");
-                    Scanner scanner1 = new Scanner(System.in);
-                    String title = scanner1.nextLine();
-                    System.out.println("Press the price of " + title);
-                    Scanner scanner2 = new Scanner(System.in);
-                    String price = scanner2.nextLine();
-                    System.out.println("Give me description of the " + title);
-                    Scanner scanner3 = new Scanner(System.in);
-                    String descr = scanner3.nextLine();
-                    System.out.println("Give me the category of " + title);
-                    Scanner scanner4 = new Scanner(System.in);
-                    String category = scanner4.nextLine();
-                    Products product = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                    executor1.execute(new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(),connectionDB));
-=======
 //                    System.out.println("Now you to press some info about product");
 //                    System.out.println("Press the Title of product");
 //                    Scanner scanner1 = new Scanner(System.in);
@@ -98,31 +63,12 @@ public class Main {
                     Thread blockprod= new Thread(new Block(connectionDB.takePreviousHash(), product.toArray(), currentDate.toString(), connectionDB));
                     blockprod.start();
                     blockprod.join();
->>>>>>> Stashed changes
                     break;
                 case 3:
                     Timestamp currentDate1 = new Timestamp(System.currentTimeMillis());
                     System.out.println("Add multiple products...");
                     System.out.println("How many products do you want to add?");
                     int numOfProds = scanner.nextInt();
-<<<<<<< Updated upstream
-                    Executor executor2= MyExecutors.myThreadPool(numOfProds);
-                    while (numOfProds > 0) {
-                        System.out.println("Press the Title of product");
-                        Scanner scanner5 = new Scanner(System.in);
-                        title = scanner5.nextLine();
-                        System.out.println("Press the price of " + title);
-                        Scanner scanner6 = new Scanner(System.in);
-                        price = scanner6.nextLine();
-                        System.out.println("Give me description of the " + title);
-                        Scanner scanner7 = new Scanner(System.in);
-                        descr = scanner7.nextLine();
-                        System.out.println("Give me the category of " + title);
-                        Scanner scanner8 = new Scanner(System.in);
-                        category = scanner8.nextLine();
-                        Products products = new Products("Code" + String.valueOf(new Random().nextInt(10000)), "" + title, "" + currentDate.toString(), "$" + price, "" + descr, "" + category, "" + connectionDB.takePreviousRec("" + title));
-                        executor2.execute(new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate.toString(),connectionDB));
-=======
                     while (numOfProds>0) {
 //                        System.out.println("Press the Title of product");
 //                        Scanner scanner5 = new Scanner(System.in);
@@ -148,7 +94,6 @@ public class Main {
                         Thread blockprod1= new Thread(new Block(connectionDB.takePreviousHash(), products.toArray(), currentDate1.toString(), connectionDB));
                         blockprod1.start();
                         blockprod1.join();
->>>>>>> Stashed changes
                         numOfProds--;
                     }
                     break;

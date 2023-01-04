@@ -89,7 +89,7 @@ public class Blockchain {
                     System.out.println("Is only one product with this title: "+title);
                     JSONObject record= new JSONObject();
                     record.put("Product Code: ", products.get(0)[0]);
-                    record.put("Title of product: ", products.get(0)[1]);
+                    record.put("Title of product: ", products.get(0)[1].toString());
                     record.put("Timestamp: ", products.get(0)[2]);
                     record.put("Price: ", products.get(0)[3]);
                     record.put("Description: ", products.get(0)[4]);

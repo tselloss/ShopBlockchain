@@ -4,23 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-<<<<<<< Updated upstream
-
-import static karachristos.example.Main.isChainValid;
-
-public class Block implements Runnable{
-    @Override
-    public void run()  {
-        mineBlock(Main.prefix);
-        try {
-            connectionDB.insertNewItem(this);
-            connectionDB.getInfoFromDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Current thread: "+Thread.currentThread().getName());
-        System.out.println("Is the BlockChain created well? " + isChainValid());
-=======
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -75,7 +58,6 @@ public class Block extends Thread{
                     System.out.println("Something gone wrong here");
                     e.printStackTrace();
                 }
->>>>>>> Stashed changes
     }
 
     private String hash;
